@@ -1,0 +1,98 @@
+// app/produit/[slug]/page.tsx
+'use client';
+import React, { useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { INITIAL_PRODUCTS } from '@/lib/catalog';
+import { useStore } from '@/store/useStore';
+import Link from 'next/link';
+
+export default function ProductDetailPage() {
+  const { slug } = useParams();
+  const router = useRouter();
+  const addToCart = useStore((s) => s.addToCart);
+  const [quantity, setQuantity] = useState(1);
+
+  const product = INITIAL_PRODUCTS.find((p) => p.slug === slug) || INITIAL_PRODUCTS[0];
+
+  const isWholesaleActive = Boolean(
+    product.price_wholesale && quantity >= product.wholesale_min_qty
+  );
+  const currentUnitPrice = isWholesaleActive ? product.price_wholesale! : product.price_retail;
+  const totalPrice = currentUnitPrice * quantity;
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-12 space-y-8">
+      <Link href="/boutique" className="text-xs text-amber-400 hover:underline flex items-center gap-1">
+        ← Retour au catalogue
+      </Link>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 bg-zinc-900/60 border border-zinc-800 p-8 rounded-3xl">
+        {/* Image */}
+        <div className="h-[420px] rounded-2xl overflow-hidden bg-black border border-zinc-800 relative">
+          <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+          <span className="absolute top-4 left-4 bg-black/80 backdrop-blur-sm text-amber-300 text-xs font-bold px-3 py-1 rounded-full uppercase">
+            {product.category}
+          </span>
+        </div>
+
+        {/* Détails */}
+        <div className="flex flex-col justify-between space-y-6">
+          <div className="space-y-4">
+            <h1 className="text-2xl md:text-4xl font-serif font-bold text-white">{product.name}</h1>
+            <p className="text-zinc-400 text-sm leading-relaxed">{product.description}</p>
+
+            {/* Grille Tarifaire */}
+            <div className="grid grid-cols-2 gap-3 pt-4 border-t border-zinc-800">
+              <div className={`p-4 rounded-xl border ${!isWholesaleActive ? 'border-amber-500 bg-amber-500/10' : 'border-zinc-800 bg-zinc-950'}`}>
+                <span className="text-xs text-zinc-400 block">Tarif Détail (1 à {product.wholesale_min_qty - 1} u)</span>
+                <span className="text-lg font-mono font-bold text-white">{product.price_retail.toLocaleString('fr-FR')} FCFA</span>
+              </div>
+
+              {product.price_wholesale && (
+                <div className={`p-4 rounded-xl border ${isWholesaleActive ? 'border-amber-500 bg-amber-500/10' : 'border-zinc-800 bg-zinc-950'}`}>
+                  <span className="text-xs text-amber-400 block font-semibold">Tarif Gros (dès {product.wholesale_min_qty} u)</span>
+                  <span className="text-lg font-mono font-bold text-amber-400">{product.price_wholesale.toLocaleString('fr-FR')} FCFA</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Sélecteur & Action */}
+          <div className="space-y-4 pt-4 border-t border-zinc-800">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-zinc-400 uppercase tracking-wider">Quantité désirée :</span>
+              <div className="flex items-center border border-zinc-700 rounded-xl bg-zinc-950">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="px-4 py-2 text-zinc-400 hover:text-white"
+                >-</button>
+                <span className="px-4 py-2 font-mono font-bold text-white">{quantity}</span>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="px-4 py-2 text-zinc-400 hover:text-white"
+                >+</button>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-baseline pt-2">
+              <span className="text-sm text-zinc-300">Total estimé :</span>
+              <span className="text-2xl font-mono font-bold text-amber-400">{totalPrice.toLocaleString('fr-FR')} FCFA</span>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  addToCart(product, quantity);
+                  router.push('/panier');
+                }}
+                className="flex-1 py-4 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 text-black font-bold uppercase text-xs tracking-wider rounded-xl transition shadow-lg"
+              >
+                Acheter Maintenant
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

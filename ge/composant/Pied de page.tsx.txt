@@ -1,0 +1,52 @@
+// components/Footer.tsx
+import React from 'react';
+import { Logo } from './Logo';
+
+export const Footer = () => {
+  return (
+    <footer className="bg-zinc-950 border-t border-amber-500/20 text-zinc-400 text-xs">
+      {/* Alerte Majeure 18+ */}
+      <div className="bg-red-950/60 border-b border-red-800/40 py-2.5 px-4 text-center">
+        <p className="text-red-300 font-bold tracking-wider uppercase text-[11px]">
+          ⛔ La vente d'alcool est strictement interdite aux mineurs de moins de 18 ans au Bénin.
+        </p>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="space-y-3">
+          <Logo className="h-12" />
+          <p className="text-zinc-500 text-xs">
+            Distributeur d'excellence de boissons raffinées au Bénin. Vente en détail pour vos soirées et en gros pour vos événements et établissements.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-white font-bold mb-3 uppercase tracking-wider text-xs">Navigation</h4>
+          <ul className="space-y-2">
+            <li><a href="/boutique" className="hover:text-amber-400 transition">Boutique & Tarifs Gros</a></li>
+            <li><a href="/a-propos" className="hover:text-amber-400 transition">À Propos d'Anne Boissons</a></li>
+            <li><a href="/contact" className="hover:text-amber-400 transition">Contact & WhatsApp</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-white font-bold mb-3 uppercase tracking-wider text-xs">Livraison & Dépôt</h4>
+          <p className="text-zinc-500">Cotonou, Bénin</p>
+          <p className="text-zinc-500 mt-1">Livraison express à Cotonou, Calavi, Porto-Novo et expédition nationale.</p>
+        </div>
+
+        <div>
+          <h4 className="text-white font-bold mb-3 uppercase tracking-wider text-xs">Légal</h4>
+          <ul className="space-y-2">
+            <li><a href="/mentions-legales" className="hover:text-amber-400 transition">Conditions Générales de Vente</a></li>
+            <li><a href="/mentions-legales" className="hover:text-amber-400 transition">Protection des Mineurs</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-zinc-900 py-4 text-center text-zinc-600 text-[11px]">
+        © {new Date().getFullYear()} Anne Boissons Royale — Tous droits réservés.
+      </div>
+    </footer>
+  );
+};

@@ -1,0 +1,47 @@
+// components/Logo.tsx
+import React from 'react';
+
+interface LogoProps {
+  className?: string;
+  variant?: 'light' | 'dark' | 'gold';
+}
+
+export const Logo: React.FC<LogoProps> = ({ className = "h-12", variant = "gold" }) => {
+  return (
+    <div className={`flex items-center gap-3 select-none ${className}`}>
+      <svg viewBox="0 0 100 100" className="h-full w-auto aspect-square fill-none" xmlns="http://www.w3.org/2000/svg">
+        {/* Cercle et bordure dorée */}
+        <circle cx="50" cy="50" r="46" stroke="#D4AF37" strokeWidth="2.5" strokeDasharray="4 2" />
+        <circle cx="50" cy="50" r="42" stroke="#E5C158" strokeWidth="1.5" />
+        
+        {/* Couronne Royale */}
+        <path d="M30 42 L36 54 L50 36 L64 54 L70 42 L66 62 L34 62 Z" fill="url(#goldGradient)" stroke="#8C6D1F" strokeWidth="1" />
+        <circle cx="30" cy="40" r="2.5" fill="#FFF8DC" />
+        <circle cx="50" cy="34" r="3" fill="#FFF8DC" />
+        <circle cx="70" cy="40" r="2.5" fill="#FFF8DC" />
+        
+        {/* Emblème Bouteille & Verre Stylisé */}
+        <path d="M48 54 L52 54 L52 74 L48 74 Z" fill="#D4AF37" />
+        <path d="M43 74 L57 74 L57 77 L43 77 Z" fill="#D4AF37" />
+        <path d="M42 60 Q50 66 58 60 L56 68 Q50 72 44 68 Z" fill="#E5C158" opacity="0.8" />
+
+        {/* Dégradé Or */}
+        <defs>
+          <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#F9DF7B" />
+            <stop offset="50%" stopColor="#D4AF37" />
+            <stop offset="100%" stopColor="#AA7C11" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <div className="flex flex-col justify-center text-left">
+        <span className="font-serif tracking-widest text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-600 uppercase">
+          Anne Boissons
+        </span>
+        <span className="text-[10px] tracking-[0.3em] font-semibold text-amber-300 uppercase -mt-1">
+          Royale • Cotonou
+        </span>
+      </div>
+    </div>
+  );
+};
